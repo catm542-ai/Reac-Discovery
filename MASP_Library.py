@@ -191,6 +191,58 @@ def excelCapturing(rutaArchivo, o):
 
     return fr1, fr2, fr3, fr4, wt1, wt2, wt3, wt4, wt5, reac, reacTemp, site, timer
 
+def protonPlus(o,wt1,solvent,setpressure):
+        
+    HOST = socket.gethostbyname(socket.gethostname())
+    PORT = 15000            # Default port
+
+    print('Connect to ' + HOST + ':' + str(PORT))
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+     
+    message="<Message>\r\n"
+    message+=" <Set>\r\n"
+    message+="  <Sample>"+"Experiment #: "+str(o)+"</Sample>\r\n"
+    message+=" </Set>\r\n"
+    message+="</Message>\r\n"
+     
+    message+="<Message>\r\n"
+    message+=" <Set>\r\n"
+    message+="  <Solvent>"+str(solvent)+"</Solvent>\r\n"
+    message+=" </Set>\r\n"
+    message+="</Message>\r\n"
+     
+    message+="<Message>\r\n"
+    message+=" <Start protocol='1D EXTENDED+'>\r\n"
+    message+="  <Option name='Number' value='16' />\r\n"
+    message+="  <Option name='AcquisitionTime' value='6.4' />\r\n"
+    message+="  <Option name='RepetitionTime' value='10' />\r\n"
+    message+="  <Option name='PulseAngle' value='90' />\r\n"
+    message+=" </Start>\r\n"
+    message+="</Message>\r\n"      
+     
+    print('\r\nSend message:')
+    print(message)
+    s.send(message.encode())
+
+    print('\r\nMessage received:')
+    s.settimeout(10.0)
+    try:
+        while True:
+            time.sleep(0.2)
+            chunk = s.recv(8192)
+            if chunk:
+                print(chunk.decode())
+
+    except socket.error as msg:
+        s.settimeout(None)    
+
+    # will only get here if a timeout occurs
+    print('\r\nClose connection')
+    s.close() 
+    a="ProtonPlus"
+    chronometer(20,a,o,setpressure)
+
 def ReactorI_SolI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the first reactor line and reagents from bottle I.
@@ -242,7 +294,7 @@ def ReactorI_SolI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
     
-def ReactorII_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorI_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the first reactor line and reagents from bottle II.
 
@@ -293,7 +345,7 @@ def ReactorII_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorIII_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorI_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the first reactor line and reagents from bottle III.
 
@@ -344,7 +396,7 @@ def ReactorIII_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorIV_SolIV(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorII_SolI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the second reactor line and reagents from bottle I.
 
@@ -395,7 +447,7 @@ def ReactorIV_SolIV(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorV_SolV(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorII_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the second reactor line and reagents from bottle II.
 
@@ -446,7 +498,7 @@ def ReactorV_SolV(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorVI_SolVI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorII_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the second reactor line and reagents from bottle III.
 
@@ -497,7 +549,7 @@ def ReactorVI_SolVI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorVII_SolVII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIII_SolI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the third  reactor line and reagents from bottle I.
 
@@ -548,7 +600,7 @@ def ReactorVII_SolVII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
             
-def ReactorVIII_SolVIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIII_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the third  reactor line and reagents from bottle II.
 
@@ -599,7 +651,7 @@ def ReactorVIII_SolVIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
             
-def ReactorIX_SolIX(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIII_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the third  reactor line and reagents from bottle III.
 
@@ -650,7 +702,7 @@ def ReactorIX_SolIX(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorX_SolX(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIV_SolI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the fourth  reactor line and reagents from bottle I.
 
@@ -701,7 +753,7 @@ def ReactorX_SolX(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         if isConnected:
             client.disconnect()
 
-def ReactorXI_SolXI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIV_SolII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
    """
    Executes the reaction using the fourth  reactor line and reagents from bottle II.
 
@@ -717,15 +769,15 @@ def ReactorXI_SolXI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
        None
    """
     
-    class Valve:
+   class Valve:
         def __init__(self, stateSetter) -> None:
             self.setter = stateSetter
 
         def setValveState(self, state):
             self.setter(state)
-    client = rs.RSeriesClient('opc.tcp://localhost:43344')
+   client = rs.RSeriesClient('opc.tcp://localhost:43344')
 
-    try:
+   try:
         reac=str(reac)
         print("Reaction development, Experiment #: "+str(o) +"\n")
         
@@ -748,11 +800,11 @@ def ReactorXI_SolXI(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
         'Tiempo de Espera 3'   
         a="Reaction development"
         chronometer(wt1,a,o,setpressure)
-    finally:
+   finally:
         if isConnected:
             client.disconnect()
             
-def ReactorXII_SolXII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
+def ReactorIV_SolIII(o,reac,reacTemp,wt1,fr1,fr2,fr3,fr4,setpressure):
     """
     Executes the reaction using the fourth  reactor line and reagents from bottle III.
 
