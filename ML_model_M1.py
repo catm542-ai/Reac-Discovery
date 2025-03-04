@@ -14,8 +14,6 @@ import seaborn as sns
 import itertools
 
 # 1. Load Data
-# Replace 'Data_set_M1.xlsx' with the path to your data file.
-# Replace 'Hoja1' with the sheet name containing your data.
 data_path = 'Data_set_M1.xlsx'
 sheet_name = 'Hoja1'
 df = pd.read_excel(data_path, sheet_name=sheet_name)
@@ -201,7 +199,6 @@ npz2 = np.load('AutoOptimization_data_test2.npz')
 npz3 = np.load('AutoOptimization_data_test3.npz')
 npz4 = np.load('AutoOptimization_data_test4.npz')
 
-# Usar float o np.float64
 test_inputs1 = npz1['inputs'].astype(float)  # or np.float64 
 test_inputs2 = npz2['inputs'].astype(float)  # or np.float64 
 test_inputs3 = npz3['inputs'].astype(float)  # or np.float64 
@@ -213,7 +210,6 @@ test_inputs4 = npz4['inputs'].astype(float)  # or np.float64
 model = load_model('modelo_M1')
 
 # Prepare data for prediction
-# Ensure that test_inputs1 has the same format as the training data
 X_predict1 = test_inputs1
 
 # Perform predictions
