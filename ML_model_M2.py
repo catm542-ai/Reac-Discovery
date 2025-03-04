@@ -14,7 +14,6 @@ import seaborn as sns
 import itertools
 
 # 1. Load Data
-# Load the dataset from an Excel file. Ensure the file is placed in the correct directory.
 data_path = 'Data_set_M2.xlsx'
 sheet_name = 'Hoja1'
 df = pd.read_excel(data_path, sheet_name=sheet_name)
