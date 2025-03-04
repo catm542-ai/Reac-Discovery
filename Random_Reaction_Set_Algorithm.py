@@ -72,5 +72,3 @@ with pd.ExcelWriter('resultados_combinaciones.xlsx') as writer:
             df.to_excel(writer, sheet_name=sheet_name, index=False)
 
 print("Data successfully exported to 'resultados_combinaciones.xlsx'")
-
-# This script ensures reproducibility and efficient subset selection for training the neural network in Reac-Eval.
